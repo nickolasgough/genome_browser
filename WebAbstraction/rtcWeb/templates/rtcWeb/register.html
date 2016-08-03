@@ -1,0 +1,96 @@
+{% load staticfiles %}
+<head>
+    <link rel="stylesheet" href="{% static 'admin/css/login.css' %}"/>
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}"/>
+    <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="http://localhost:4000/easyrtc/easyrtc.js"></script>
+
+    <title>Register for Web Abstraction</title>
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+<style>
+    .login .form-row #id_color {
+        clear: both;
+        padding: 8px;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+</style>
+
+
+<body class=" login" data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+
+            <h1><a href="/rtcWeb">Web Abstraction</a>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a
+                    href="/rtcWeb/login">Login</a></h1>
+
+
+        </div>
+
+
+    </div>
+    <!-- END Header -->
+
+    <div id="content" class="colM">
+
+
+        <div id="content-main">
+            <form action='/rtcWeb/register' method="post" id="login-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    {{username_error}}
+                    <label class="required" for="id_username">Username:</label> <input id="id_username" maxlength="254"
+                                                                                       name="name" type="text" required>
+
+
+                </div>
+
+                <div class="form-row">
+
+                    <label class="required" for="id_color">Color:</label> <input id="id_color" maxlength="254"
+                                                                                 class="jscolor" name="color"
+                                                                                 type="text" required>
+
+
+                </div>
+                <div class="form-row">
+                    {{password_error}}
+                    <label class="required" for="id_password">Password:</label> <input id="id_password" name="password"
+                                                                                       type="password" required>
+                </div>
+
+
+                <div class="submit-row">
+                    <label>&nbsp;</label><input value="Sign up" type="submit">
+                </div>
+                <script src="{% static 'rtcWeb/js/jscolor.js' %}"/>
+
+            </form>
+
+            <script type="text/javascript">
+                function clicked() {
+                    easyrtc.connect("easyrtc.dataMessaging", function (easyrtcid) {
+
+
+                            }, function () {
+
+                            }
+                    );
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+
+</body>

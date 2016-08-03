@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<head>
+<link rel="stylesheet" href="{% static 'admin/css/login.css' %}"/>
+<link rel="stylesheet" href="{% static 'admin/css/base.css' %}"/>
+
+
+<title>Register for Web Abstraction</title>
+<meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+
+
+
+<body class=" login" data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+
+            <h1><a href="/rtcWeb">Web Abstraction</a></h1>
+
+
+
+        </div>
+
+
+    </div>
+    <!-- END Header -->
+
+    <div id="content" class="colM">
+
+
+        <div id="content-main">
+
+            <form action='/rtcWeb/loginCheck' method="post" id="login-form">
+                 {% csrf_token %}
+                <div class="form-row">
+                    {{login_error}}
+                    <label class="required" for="id_username">Username:</label> <input id="id_username" maxlength="254"
+                                                                                       name="name" type="text" required>
+
+                </div>
+
+
+                <div class="form-row">
+                    <label class="required" for="id_password">Password:</label> <input id="id_password" name="password"
+                                                                                       type="password" required>
+                </div>
+
+
+                <div class="submit-row">
+                    <label>&nbsp;</label><input value="login" type="submit">
+                </div>
+                    <script src="{% static 'rtcWeb/js/jscolor.js' %}"/>
+
+            </form>
+
+            <script type="text/javascript">
+                document.getElementById('id_username').focus()
+            </script>
+        </div>
+    </div>
+</div>
+
+
+</body>
