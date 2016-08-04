@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html>
+
+<head>
+<title> Genomics </title>
+
+<!--<h1> Genomics </h1>-->
+
+<script src="../lib/angular.min.js"></script>
+<script src="../lib/p5.min.js"></script>
+<script src="../lib/p5.play.js"></script>
+<script src="../lib/p5.dom.js"></script>
+
+<style>
+html, body{
+    margin: 2px;
+    padding: 0px;
+}
+#easel_canvas {
+    position: absolute;
+    overflow: hidden;
+    border: 4px solid #001a00;
+}
+</style>
+</head>
+
+<body id="controller" ng-app="genomics_app" ng-controller="genomics_controller" ng-init="gene_length" ng-init="gene_color">
+<!--<p> Length: <span ng-bind="gene_length"></span>. Color: <span ng-bind="gene_color"></span>. </p>-->
+
+<!--<canvas id="upper_canvas" height="225" width="{{window_width()}}"></canvas>-->
+<!--<canvas id="lower_canvas" height="225" width="{{window_width()}}"></canvas>-->
+<script src="../js/p5_script.js"></script>
+</body>
+
+</html>
