@@ -6,7 +6,7 @@ var roomsJoined = {};
 var roomJoining = {};
 var messageCommunicationMode = "reliable";
 /*
- connects to sevrer
+    connects to server
  */
 function pageLoad() {
     easyrtc.getDatachannelConstraints = function () {
@@ -16,8 +16,7 @@ function pageLoad() {
 
 }
 /*
- Perosn stored in nodejs server as shown down below
-
+    Person stored in nodejs server as shown down below
  */
 function person(name, easyrtcid, color) {
     this.name = name;
@@ -40,9 +39,7 @@ var channelIsActive = {}; // tracks which channels are active
 function connect() {
 
     easyrtc.setServerListener(serverListener);
-
     easyrtc.setAcceptChecker(acceptTheCall);
-
     easyrtc.enableDebug(false);
     easyrtc.enableVideo(false);
     easyrtc.enableAudio(false);
@@ -96,6 +93,8 @@ function disconnectFromServer() {
 
 function serverListener(msgType, msgData, targeting) {
     var buttonOfAbruptedSession = document.getElementById("connect_" + msgData);
+    if (buttonOfAbruptedSession == null)
+        return;
     while (buttonOfAbruptedSession.hasChildNodes()) {
         buttonOfAbruptedSession.removeChild(buttonOfAbruptedSession.lastChild);
     }
@@ -115,7 +114,7 @@ function serverListener(msgType, msgData, targeting) {
  */
 function messageFromClient(who, msgType, content) {
     // Escape html special characters, then add linefeeds.
-    
+
     if (msgType == "msg") {
         alert(easyrtc.idToName(who) + " Signalled")
     } else if (msgType == "leavingRoom") {
@@ -186,8 +185,7 @@ function PeopleListener(roomName, occupantList, isPrimary) {
     }
     if (selfEasyrtcid) {
         for (var easyrtcid in connectList) {
-
-
+            console.log(easyrtc.idToName(easyrtcid));
             if (!document.getElementById("LI" + easyrtc.idToName(easyrtcid)) && (easyrtc.idToName(easyrtcid) != easyrtcid) && easyrtc.getConnectStatus(easyrtcid) === easyrtc.NOT_CONNECTED) {
 
                 var listElement = document.createElement("LI");
@@ -242,53 +240,31 @@ function occupantListener(roomName, occupants, isPrimary) {
     } else {
         jQuery(roomDiv).empty();
     }
-    for (var easyrtcid in occupants) {
-        var button;
-        if (roomName == "default") {
-            button = document.createElement("button");
-            PeopleListener(roomName, occupants, isPrimary);
-            refreshRoomList();
-            return;
-        } else button = document.createElement("label");
-        // button.onclick = (function(roomname, easyrtcid) {
-        //     return function() {
-        //         sendMessage(easyrtcid, roomName);
-        //     };
-        // })(roomName, easyrtcid);
-
-
-        var presenceText = "";
-        if (occupants[easyrtcid].presence) {
-            presenceText += "(";
-            if (occupants[easyrtcid].presence.show) {
-                presenceText += "show=" + occupants[easyrtcid].presence.show + " ";
-            }
-            if (occupants[easyrtcid].presence.status) {
-                presenceText += "status=" + occupants[easyrtcid].presence.status;
-            }
-            presenceText += ")";
-        }
-        var button1 = document.createElement("a");
-        button1.href = "javascript:void(0)";
-        button1.onclick = function () {
-            console.log("hello");
-            startCall(easyrtcid);
-        };
-        button1.innerHTML = easyrtc.idToName(easyrtcid);
-        button1.style = "top-margin:5px";
-        /*       easyrtc.sendServerMessage("getData", easyrtc.idToName(easyrtcid), function (a, b) {
-         button1.style = "color:#"+a.color;
-
-         }, function (a, b) {
-         });       */
-    }
-    //roomDiv.appendChild(button1);
+    // for (var easyrtcid in occupants) {
+    //     console.log(easyrtc.idToName(easyrtcid));
+    var button;
+    // if (roomName == "default") {
+    button = document.createElement("button");
+    PeopleListener(roomName, occupants, isPrimary);
     refreshRoomList();
-    //PeopleListener(roomName, occupants, isPrimary);
+    // return;
+//        }
+    /* else button = document.createElement("label");
+
+     var button1 = document.createElement("a");
+     button1.href = "javascript:void(0)";
+     button1.onclick = function () {
+     console.log("hello");
+     startCall(easyrtcid);
+     };
+     button1.innerHTML = easyrtc.idToName(easyrtcid);
+     button1.style = "top-margin:5px";
+     */
+    // }
+    // refreshRoomList();
 }
 function updateButtonState(otherEasyrtcid) {
 
-    console.log(easyrtc.idToName(otherEasyrtcid));
     if (selfEasyrtcid) {
         if (!selfEasyrtcid.reconnecting[easyrtc.idToName(otherEasyrtcid)]) {
             var isConnected = channelIsActive[otherEasyrtcid];
@@ -383,9 +359,10 @@ function startCall(otherEasyrtcid) {
 }
 
 
+
 function disconnectFromOtherClient(otherEasyrtcid) {
 
-
+console.log("I was called");
     connectList[otherEasyrtcid] = false;
     closeListener(otherEasyrtcid);
     if (connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)]) {
@@ -398,7 +375,6 @@ function disconnectFromOtherClient(otherEasyrtcid) {
     easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
     }, function (a, b) {
     });
-
     selfEasyrtcid.numberOfConnections[easyrtc.idToName(otherEasyrtcid)]--;
     if (selfEasyrtcid.numberOfConnections && selfEasyrtcid.numberOfConnections[easyrtc.idToName(otherEasyrtcid)] == 0)
         easyrtc.hangup(otherEasyrtcid);
@@ -624,25 +600,22 @@ function addRoom(roomName, parmString, userAdded) {
     }
 
     function addRoomButton() {
-
+        console.log("addRoomButton was called");
         var roomButtonHolder = document.getElementById('rooms');
         var roomdiv = document.createElement("div");
         roomdiv.id = roomid;
         roomdiv.className = "roomDiv";
         var roomButton, roomLabel;
-
         roomButton = document.createElement("label");
         roomButton.style.float = "left";
         roomLabel = (document.createTextNode(roomName));
         roomButton.appendChild(roomLabel);
-
         roomdiv.appendChild(roomButton);
         roomButtonHolder.appendChild(roomdiv);
         var roomOccupants = document.createElement("div");
         roomOccupants.id = genRoomOccupantName(roomName);
         roomOccupants.className = "roomOccupants";
         roomdiv.appendChild(roomOccupants);
-
         if (roomName != "default") {
             var leaveEle = document.createElement("a");
             leaveEle.href = "javascript:void(0)";
@@ -652,7 +625,6 @@ function addRoom(roomName, parmString, userAdded) {
             };
             leaveEle.innerHTML = "-leave";
             roomdiv.appendChild(leaveEle);
-
         }
     }
 
@@ -707,7 +679,11 @@ function roomEntryListener(entered, roomName) {
         roomsJoined[roomName] = p5canvas(null, roomName, selfEasyrtcid.color);
         console.log(roomName);
         var roomParticipants = easyrtc.getRoomOccupantsAsArray(roomName);
-        console.log(roomParticipants[i]);
+        console.log(roomParticipants[0]);
+        console.log(genRoomDivName(roomName));
+        console.log(document.getElementById(genRoomDivName(roomName)));
+
+        console.log(genRoomOccupantName(roomName));
         for (var i in roomParticipants) {
             if (roomParticipants[i] != selfEasyrtcid.uniqueID) {
                 easyrtc.idToName(roomParticipants[i]);
@@ -733,15 +709,34 @@ function refreshRoomList() {
 }
 
 function addQuickJoinButtons(roomList) {
+    console.log(roomList);
     var quickJoinBlock = document.getElementById("quickJoinBlock");
     var n = quickJoinBlock.childNodes.length;
     for (var i = n - 1; i >= 0; i--) {
         quickJoinBlock.removeChild(quickJoinBlock.childNodes[i]);
     }
-
     function addQuickJoinButton(roomname, numberClients) {
-        var checkid = "roomblock_" + roomname;
+        var checkid = genRoomOccupantName(roomname);
         if (document.getElementById(checkid)) {
+            var roomBlock = document.getElementById(genRoomDivName(roomName));
+            var n = roomBlock.childNodes.length;
+            for (var i = n - 1; i >= 0; i--) {
+                if (roomBlock.childNodes[i].id == "NameUnderRoomBlock")
+                    roomBlock.removeChild(roomBlock.childNodes[i]);
+            }
+            var roomParticipants = easyrtc.getRoomOccupantsAsArray(roomName);
+            var tableOfNames = document.createElement("ul");
+            tableOfNames.id = "NameUnderRoomBlock";
+            for (var i = 0; i < roomParticipants.length; i++) {
+                if (roomParticipants[i] == selfEasyrtcid.uniqueID)
+                    continue;
+                var addedName = document.createElement("LI");
+                addedName.innerHTML = (easyrtc.idToName(roomParticipants[i]));
+                tableOfNames.appendChild(addedName);
+
+            }
+            roomBlock.appendChild(tableOfNames);
+
             return; // already present so don't add again
         }
         var id = "quickjoin_" + roomname;
@@ -775,6 +770,7 @@ function addQuickJoinButtons(roomList) {
         };
     }
     for (var roomName in roomList) {
+        console.log(roomName);
         if (roomName != "default") addQuickJoinButton(roomName, roomList[roomName].numberClients);
     }
 }

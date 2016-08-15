@@ -164,18 +164,19 @@
 
         input, textarea {
             background-color: #d1d1d1;
-            width:100%;
+            width: 100%;
         }
+
         button {
-    background-color: black;
-    border: white;
-    color: white;
-    /*padding: 15px 32px;*/
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-}
+            background-color: black;
+            border: white;
+            color: white;
+            /*padding: 15px 32px;*/
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+        }
 
 
     </style>
@@ -185,7 +186,7 @@
 
 <header id="headerBar">
 
-Hello {{name}} <label id="commModeLabel">Current Communication Mode: Reliable</label>
+    Hello {{name}} <label id="commModeLabel">Current Communication Mode: Reliable</label>
 
 </header>
 
@@ -215,11 +216,9 @@ Hello {{name}} <label id="commModeLabel">Current Communication Mode: Reliable</l
         </a></li>
 
 
-
         <li style="float:right">
             <a id="logout" onclick="disconnectFromServer()" href="javascript:void(0);">Logout</a>
         </li>
-
 
 
     </ul>
@@ -234,26 +233,26 @@ Hello {{name}} <label id="commModeLabel">Current Communication Mode: Reliable</l
         Refresh
     </a>
 
-    <input style="padding:8px 8px 8px" id="roomToAdd" type="text" size="20" onkeydown="inputRoomAdd(event)" placeholder="Add a room.."/>
+    <input style="padding:8px 8px 8px" id="roomToAdd" type="text" size="20" onkeydown="inputRoomAdd(event)"
+           placeholder="Add a room.."/>
     <script>
-        function inputRoomAdd(event)
-        {
-           if(event.keyCode==13)
-        {
-            addRoom(null,null,true);
-            document.getElementById('roomToAdd').value="";
+        function inputRoomAdd(event) {
+            if (event.keyCode == 13) {
+                addRoom(null, null, true);
+                document.getElementById('roomToAdd').value = "";
+
+            }
 
         }
-
-        }
-
     </script>
-
     Rooms Joined:
     <div id="rooms">
     </div>
     People Available
     <ul id="listOfPeople">
+    </ul>
+    People Connected
+    <ul id="listConnectedtOfPeople">
     </ul>
 
 
@@ -262,7 +261,7 @@ Hello {{name}} <label id="commModeLabel">Current Communication Mode: Reliable</l
 
 <div id="main">
     <div id="playArea" class="canveses" oncontextmenu="return false;">
-    <!--<image src="{% static 'rtcWeb/images/house.jpg'%}" class="applicationElement" style="float:right"></image>-->
+        <!--<image src="{% static 'rtcWeb/images/house.jpg'%}" class="applicationElement" style="float:right"></image>-->
     </div>
 
 

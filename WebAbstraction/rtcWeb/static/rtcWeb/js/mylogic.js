@@ -63,7 +63,7 @@ function p5canvas(destId, roomName, clr) {
                 closeButton.innerHTML = "X";
                 closeButton.href = "javascript:void(0)";
                 closeButton.onclick = function () {
-                    startCall(dest);
+                    disconnectFromOtherClient(dest);
 
                 };
                 closeButton.style.float = "right";
@@ -88,7 +88,7 @@ function p5canvas(destId, roomName, clr) {
             if (p.mouseIsPressed) {
                 pg.push();
                 pg.stroke(p.getColor(myColor));
-                pg.ellipse(p.mouseX, p.mouseY, 5, 5);
+                pg.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
                 pg.pop();
             }
 
