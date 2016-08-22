@@ -7,7 +7,7 @@ var easyrtc = require("easyrtc"); // EasyRTC external module
 var httpApp = express();
 //httpApp.use(express.static(__dirname + "/"));
 // Start Express http server on port 8080
-var webServer = http.createServer(httpApp).listen(4000, "128.233.174.141");
+var webServer = http.createServer(httpApp).listen(4000, "127.0.0.1");
 // Start Socket.io so it attaches itself to Express server
 var socketServer = io.listen(webServer, {
     "log level": 1
@@ -51,6 +51,9 @@ easyrtc.events.on("roomJoin", function (connectionObj, roomName, roomParameter, 
  }); */
 easyrtc.events.on("roomLeave", function (connectionObj, roomName, roomParameter, callback) {
     //console.log("leaving " );
+    delete peopleConnectedToServer[connectionObj.getUsername()].roomsJoined[roomName];
+
+
     easyrtc.events.defaultListeners.roomLeave(connectionObj, roomName, roomParameter, callback);
 });
 // Start EasyRTC server
@@ -154,7 +157,19 @@ var onEasyrtcMsg = function (connectionObj, msg, socketCallback, next) {
                     });
                 } else easyrtc.events.emitDefault("easyrtcMsg", connectionObj, msg, socketCallback, next);
                 break;
-          
+
+            case "getAllConnectedIDs" :
+                var applicationObject = connectionObj.getApp();
+                var easyIds;
+                applicationObject.getConnectionEasyrtcids(function (error,easyrtcids) {
+
+                    // console.log(easyrtcids);
+                    easyIds = easyrtcids;
+                });
+                // console.log(easyIds);
+                socketCallback({"msgType": "allIds", "msgData": easyIds});
+
+                break;
             default:
                 easyrtc.events.emitDefault("easyrtcMsg", connectionObj, msg, socketCallback, next);
                 break;

@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="26e81a60-daf9-4ab0-8db7-444517fef97e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebAbstraction/db.sqlite3" afterPath="$PROJECT_DIR$/WebAbstraction/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebAbstraction/nodejs" afterPath="$PROJECT_DIR$/WebAbstraction/nodejs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/mylogic.js" afterPath="$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/mylogic.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebAbstraction/nodejs/server.js" afterPath="$PROJECT_DIR$/WebAbstraction/nodejs/server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js" afterPath="$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html" afterPath="$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html" />
     </list>
@@ -28,32 +27,22 @@
     <favorites_list name="Web Groupware tool kit" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="toolKitMain.js" pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="toolKitMain.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+            <state relative-caret-position="635">
+              <caret line="947" column="21" selection-start-line="947" selection-start-column="21" selection-end-line="947" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="paint.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="240" column="42" selection-start-line="240" selection-start-column="42" selection-end-line="240" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mylogic.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mylogic.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/mylogic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+            <state relative-caret-position="323">
+              <caret line="43" column="50" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -62,8 +51,8 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebAbstraction/nodejs/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
+            <state relative-caret-position="765">
+              <caret line="45" column="79" selection-start-line="45" selection-start-column="79" selection-end-line="45" selection-end-column="79" />
               <folding />
             </state>
           </provider>
@@ -77,8 +66,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html" />
         <option value="$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/mylogic.js" />
+        <option value="$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html" />
         <option value="$PROJECT_DIR$/WebAbstraction/nodejs/server.js" />
         <option value="$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js" />
       </list>
@@ -121,6 +110,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -263,7 +253,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -538,6 +527,38 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4080">
+          <caret line="240" column="42" selection-start-line="240" selection-start-column="42" selection-end-line="240" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/mylogic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebAbstraction/nodejs/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/WebAbstraction/nodejs/server.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -661,38 +682,37 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="245" column="9" selection-start-line="245" selection-start-column="9" selection-end-line="245" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebAbstraction/nodejs/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/templates/rtcWeb/paint.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="240" column="42" selection-start-line="240" selection-start-column="42" selection-end-line="240" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+        <state relative-caret-position="765">
+          <caret line="45" column="79" selection-start-line="45" selection-start-column="79" selection-end-line="45" selection-end-column="79" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/mylogic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+        <state relative-caret-position="323">
+          <caret line="43" column="50" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebAbstraction/rtcWeb/static/rtcWeb/js/toolKitMain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="635">
+          <caret line="947" column="21" selection-start-line="947" selection-start-column="21" selection-end-line="947" selection-end-column="21" />
           <folding />
         </state>
       </provider>

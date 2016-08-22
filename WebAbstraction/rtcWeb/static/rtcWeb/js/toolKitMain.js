@@ -6,7 +6,7 @@ var roomsJoined = {};
 var roomJoining = {};
 var messageCommunicationMode = "reliable";
 /*
-    connects to server
+ connects to server
  */
 function pageLoad() {
     easyrtc.getDatachannelConstraints = function () {
@@ -16,7 +16,7 @@ function pageLoad() {
 
 }
 /*
-    Person stored in nodejs server as shown down below
+ Person stored in nodejs server as shown down below
  */
 function person(name, easyrtcid, color) {
     this.name = name;
@@ -32,6 +32,7 @@ var selfEasyrtcid = "";
 var selfEasyrtcid = "";
 var connectList = {}; // dictionary with easyrtcids storing connected people with **server**
 var channelIsActive = {}; // tracks which channels are active
+var resetTime = 10000;
 /*
  connect to server
 
@@ -62,6 +63,8 @@ function connect() {
         }, function (a, b) {
         });
     });
+
+
 }
 
 /*
@@ -104,6 +107,7 @@ function serverListener(msgType, msgData, targeting) {
     if (connectedPeopleCanveses[easyrtc.idToName(msgData)]) {
         connectedPeopleCanveses[easyrtc.idToName(msgData)].removeAll();
         connectedPeopleCanveses[easyrtc.idToName(msgData)].updateDest(null, null);
+        delete connectedPeopleCanveses[easyrtc.idToName(msgData)];
     }
 }
 /**
@@ -127,13 +131,16 @@ function messageFromClient(who, msgType, content) {
         if (connectedPeopleCanveses[easyrtc.idToName(who)]) {
             connectedPeopleCanveses[easyrtc.idToName(who)].removeAll();
             connectedPeopleCanveses[easyrtc.idToName(who)].updateDest(null, null);
+            delete connectedPeopleCanveses[easyrtc.idToName(who)];
         }
         delete selfEasyrtcid.connectedList[easyrtc.idToName(who)];
         easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
         }, function (a, b) {
         });
         closeListener(who);
+        refreshRoomList();
         alert("disconnected by " + easyrtc.idToName(who));
+
     } else if (msgType == "drawing") {
         // call the function for of you p5 with the data you want, data is stored in content.content
         if (content.targetRoom) {
@@ -153,6 +160,25 @@ function messageFromClient(who, msgType, content) {
         else
             selfEasyrtcid.numberOfConnections[easyrtc.idToName(who)] = 1;
     }
+    else if (msgType == "signalConnection") {
+
+        console.log("connection request from " + easyrtc.idToName(who));
+        var accept = confirm("Want to connect with " + easyrtc.idToName(who));
+        if (accept) {
+
+
+            prcoessConnection(who);
+            sendMessage(who, null, "signalConnected", null);
+        }
+
+
+    }
+    else if (msgType == "signalConnected") {
+        console.log("Accepted");
+        prcoessConnection(who);
+
+    }
+
 
     else {
         console.log(content);
@@ -188,35 +214,7 @@ function PeopleListener(roomName, occupantList, isPrimary) {
             console.log(easyrtc.idToName(easyrtcid));
             if (!document.getElementById("LI" + easyrtc.idToName(easyrtcid)) && (easyrtc.idToName(easyrtcid) != easyrtcid) && easyrtc.getConnectStatus(easyrtcid) === easyrtc.NOT_CONNECTED) {
 
-                var listElement = document.createElement("LI");
-                listElement.id = "LI" + easyrtc.idToName(easyrtcid);
-                var rowGroup = document.createElement("span");
-                var rowLabel = document.createTextNode(easyrtc.idToName(easyrtcid) + " ");
-                rowGroup.appendChild(rowLabel);
-                button = document.createElement("button");
-                button.id = "connect_" + easyrtc.idToName(easyrtcid);
-                button.onclick = function (easyrtcid) {
-                    return function () {
-                        startCall(easyrtcid);
-                    };
-                }(easyrtcid);
-                label = document.createTextNode("Connect");
-                button.appendChild(label);
-                rowGroup.appendChild(button);
-                button = document.createElement("button");
-                button.id = "send_" + easyrtcid;
-                button.onclick = function (easyrtcid) {
-                    return function () {
-                        sendStuffP2P(easyrtcid);
-                    };
-                }(easyrtcid);
-                label = document.createTextNode("Send Message");
-                button.appendChild(label);
-                //rowGroup.appendChild(button);
-                otherClientDiv.appendChild(rowGroup);
-                updateButtonState(easyrtcid);
-                listElement.appendChild(rowGroup);
-                list.appendChild(listElement);
+
             }
         }
     }
@@ -245,7 +243,7 @@ function occupantListener(roomName, occupants, isPrimary) {
     var button;
     // if (roomName == "default") {
     button = document.createElement("button");
-    PeopleListener(roomName, occupants, isPrimary);
+    // PeopleListener(roomName, occupants, isPrimary);
     refreshRoomList();
     // return;
 //        }
@@ -297,10 +295,7 @@ function startCall(otherEasyrtcid) {
             console.log(easyrtc.call);
 
             easyrtc.call(otherEasyrtcid, function (caller, media) { // success callback
-                if (media === "datachannel") {
-                    // console.log("made call succesfully");
-                    easyrtc.sendDataP2P(otherEasyrtcid, "signalConnection", selfEasyrtcid);
-                }
+
             }, function (errorCode, errorText) {
                 connectList[otherEasyrtcid] = false;
                 closeListener(otherEasyrtcid);
@@ -318,11 +313,14 @@ function startCall(otherEasyrtcid) {
                         else
                             selfEasyrtcid.numberOfConnections[a.name] = 1;
                         connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)] = p5canvas(otherEasyrtcid, null, selfEasyrtcid.color);
+                        refreshRoomList();
+
                         easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
                         }, function (a, b) {
                         });
                     }, function (a, b) {
                     });
+
                 }
             });
         } catch (callerror) {
@@ -330,55 +328,66 @@ function startCall(otherEasyrtcid) {
         }
     } else {
 
-        if (!selfEasyrtcid.connectedList[easyrtc.idToName(otherEasyrtcid)]) {
-            easyrtc.sendDataP2P(otherEasyrtcid, "signalConnection", selfEasyrtcid);
-            console.log(easyrtc.idToName(otherEasyrtcid));
-            selfEasyrtcid.reconnecting[easyrtc.idToName(otherEasyrtcid)] = false;
-            updateButtonState(otherEasyrtcid);
-            easyrtc.sendServerMessage("getData", easyrtc.idToName(otherEasyrtcid), function (a, b) {
-                a.connected = true;
-                selfEasyrtcid.connectedList[a.name] = a.uniqueID;
-                if (selfEasyrtcid.numberOfConnections && selfEasyrtcid.numberOfConnections[a.name])
-                    selfEasyrtcid.numberOfConnections[a.name]++;
-                else
-                    selfEasyrtcid.numberOfConnections[a.name] = 1;
-                connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)] = p5canvas(otherEasyrtcid, null, selfEasyrtcid.color);
-                easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
-                }, function (a, b) {
-                });
-            }, function (a, b) {
-            });
+        if (connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)] == null) {
+            console.log("Hello");
+            sendMessage(otherEasyrtcid, null, "signalConnection", null);
 
-
-            easyrtc.sendDataWS(otherEasyrtcid, "increaseNumberOfConnectionsWithMe", "");
         }
         else {
             easyrtc.showError("Already Connected to " + easyrtc.idToName(otherEasyrtcid));
         }
     }
+
+    refreshRoomList();
 }
 
+
+function prcoessConnection(otherEasyrtcid) {
+
+    console.log(easyrtc.idToName(otherEasyrtcid));
+    selfEasyrtcid.reconnecting[easyrtc.idToName(otherEasyrtcid)] = false;
+    updateButtonState(otherEasyrtcid);
+    easyrtc.sendServerMessage("getData", easyrtc.idToName(otherEasyrtcid), function (a, b) {
+        a.connected = true;
+        selfEasyrtcid.connectedList[a.name] = a.uniqueID;
+        if (selfEasyrtcid.numberOfConnections && selfEasyrtcid.numberOfConnections[a.name])
+            selfEasyrtcid.numberOfConnections[a.name]++;
+        else
+            selfEasyrtcid.numberOfConnections[a.name] = 1;
+        connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)] = p5canvas(otherEasyrtcid, null, selfEasyrtcid.color);
+        easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
+        }, function (a, b) {
+        });
+    }, function (a, b) {
+    });
+    easyrtc.sendDataWS(otherEasyrtcid, "increaseNumberOfConnectionsWithMe", "");
+
+
+}
 
 
 function disconnectFromOtherClient(otherEasyrtcid) {
 
-console.log("I was called");
+    console.log("I was called");
     connectList[otherEasyrtcid] = false;
     closeListener(otherEasyrtcid);
     if (connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)]) {
         connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)].removeAll();
         connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)].updateDest(null, null);
+        delete connectedPeopleCanveses[easyrtc.idToName(otherEasyrtcid)];
     }
 
     easyrtc.sendDataP2P(otherEasyrtcid, "signalDisconnect", selfEasyrtcid);
     delete selfEasyrtcid.connectedList[easyrtc.idToName(otherEasyrtcid)];
-    easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
-    }, function (a, b) {
-    });
+
     selfEasyrtcid.numberOfConnections[easyrtc.idToName(otherEasyrtcid)]--;
     if (selfEasyrtcid.numberOfConnections && selfEasyrtcid.numberOfConnections[easyrtc.idToName(otherEasyrtcid)] == 0)
         easyrtc.hangup(otherEasyrtcid);
 
+    easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
+    }, function (a, b) {
+    });
+    refreshRoomList();
 }
 
 
@@ -470,6 +479,7 @@ function loginSuccess(easyrtcid) {
                 if (a == "loginAlready") {
                     delete selfEasyrtcid;
                     easyrtc.disconnect();
+                    logoutFromDjango();
                     alert("You are already logged in");
 
                 } else {
@@ -496,6 +506,9 @@ function loginSuccess(easyrtcid) {
     }, function (a, b) {
         console.log(a, "    ", b);
     });
+
+
+    setInterval(refreshRoomList, resetTime);
 }
 /**
  *
@@ -557,6 +570,8 @@ function acceptTheCall(easyrtcid, acceptor) {
             selfEasyrtcid.numberOfConnections[idToName]++;
         else
             selfEasyrtcid.numberOfConnections[idToName] = 1;
+        refreshRoomList();
+
         acceptor(true);
 
     } else if (selfEasyrtcid.connectedList[easyrtc.idToName(easyrtcid)]) {
@@ -567,6 +582,8 @@ function acceptTheCall(easyrtcid, acceptor) {
             selfEasyrtcid.numberOfConnections[idToName]++;
         else
             selfEasyrtcid.numberOfConnections[idToName] = 1;
+        refreshRoomList();
+
         acceptor(true);
     } else {
         var accepted = confirm("Want to Connect with " + easyrtc.idToName(easyrtcid));
@@ -575,6 +592,8 @@ function acceptTheCall(easyrtcid, acceptor) {
                 console.log(a);
                 selfEasyrtcid.connectedList[a.name] = a.uniqueID;
                 connectedPeopleCanveses[easyrtc.idToName(easyrtcid)] = p5canvas(easyrtcid, null, selfEasyrtcid.color);
+                refreshRoomList();
+
                 easyrtc.sendServerMessage("updateData", selfEasyrtcid, function (a, b) {
                 }, function (a, b) {
                 });
@@ -584,6 +603,8 @@ function acceptTheCall(easyrtcid, acceptor) {
                 selfEasyrtcid.numberOfConnections[idToName]++;
             else
                 selfEasyrtcid.numberOfConnections[idToName] = 1;
+
+
         }
         acceptor(accepted);
     }
@@ -706,7 +727,107 @@ function refreshRoomList() {
     if (isConnected) {
         easyrtc.getRoomList(addQuickJoinButtons, null);
     }
+
+    var connectedIds;
+    easyrtc.sendServerMessage("getAllConnectedIDs", null, function (msgType, msgData) {
+        connectedIds = msgData;
+        refreshRoomHelper(connectedIds);
+
+    }, function (errorType, error) {
+        alert("Error generated");
+        console.log("msgType", "error");
+
+    });
+
+
 }
+
+function refreshRoomHelper(connectedIds) {
+
+
+    console.log("Received: " + connectedIds);
+
+
+    var blockOfPeopleAvailable = document.getElementById("listOfPeople");
+
+    var blockOfPeopleConnected = document.getElementById("listConnectedtOfPeople");
+
+    while (blockOfPeopleAvailable.hasChildNodes()) {
+        blockOfPeopleAvailable.removeChild(blockOfPeopleAvailable.lastChild);
+    }
+
+    while (blockOfPeopleConnected.hasChildNodes()) {
+        blockOfPeopleConnected.removeChild(blockOfPeopleConnected.lastChild);
+    }
+
+    for (var index in connectedIds) {
+        var id = connectedIds[index];
+        if (id == selfEasyrtcid.uniqueID)
+            continue;
+        if (connectedPeopleCanveses[easyrtc.idToName(id)]) {
+            console.log("adding to blockOfPeopleConnected");
+            blockOfPeopleConnected.appendChild(createLiElement(id, true));
+        }
+        else {
+            console.log("adding to blockOfPeopleAvailable");
+
+
+            blockOfPeopleAvailable.appendChild(createLiElement(id, false));
+
+        }
+
+
+    }
+
+
+}
+
+
+function createLiElement(easyrtcid, connected) {
+
+
+    var listElement = document.createElement("LI");
+    listElement.id = "LI" + easyrtc.idToName(easyrtcid);
+    var rowGroup = document.createElement("span");
+    var rowLabel = document.createTextNode(easyrtc.idToName(easyrtcid) + " ");
+    rowGroup.appendChild(rowLabel);
+    button = document.createElement("button");
+    button.id = "connect_" + easyrtc.idToName(easyrtcid);
+
+    if (connected) {
+
+        button.onclick = function (easyrtcid) {
+            return function () {
+                disconnectFromOtherClient(easyrtcid);
+            };
+        }(easyrtcid);
+    } else {
+        button.onclick = function (easyrtcid) {
+            return function () {
+                startCall(easyrtcid);
+            };
+        }(easyrtcid);
+    }
+    label = document.createTextNode((connected ? "Disc" : "C") + "onnect");
+    button.appendChild(label);
+    rowGroup.appendChild(button);
+    button = document.createElement("button");
+    button.id = "send_" + easyrtcid;
+    button.onclick = function (easyrtcid) {
+        return function () {
+            sendStuffP2P(easyrtcid);
+        };
+    }(easyrtcid);
+    label = document.createTextNode("Send Message");
+    button.appendChild(label);
+    //rowGroup.appendChild(button);
+    updateButtonState(easyrtcid);
+    listElement.appendChild(rowGroup);
+    return listElement;
+
+
+}
+
 
 function addQuickJoinButtons(roomList) {
     console.log(roomList);
@@ -826,10 +947,6 @@ function sendMessage(destTargetId, destRoom, msgType, message) {
                             }
                         }
                     }
-
-
-                    //messageFromClient("Me", "message", text);
-                    //document.getElementById('sendMessageText').value = "";
                 }
             }
             else {
@@ -919,6 +1036,7 @@ function leaveRoom(roomName) {
     if (roomsJoined[roomName]) {
         roomsJoined[roomName].removeAll();
         roomsJoined[roomName].updateDest(null, null);
+        delete roomsJoined[roomName];
         // delete roomsJoined[roomName];
     }
     var roomParticipants = easyrtc.getRoomOccupantsAsArray(roomName);
@@ -933,8 +1051,6 @@ function leaveRoom(roomName) {
 
 
     }
-
-
     easyrtc.leaveRoom(roomName, null);
 }
 
