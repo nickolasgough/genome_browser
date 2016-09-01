@@ -9,8 +9,9 @@
 
 <script src="../lib/angular.min.js"></script>
 <script src="../lib/p5.min.js"></script>
-<script src="../lib/p5.play.js"></script>
+<!--<script src="../lib/p5.play.js"></script>-->
 <script src="../lib/p5.dom.js"></script>
+<!--<script src="../lib/processing.min.js"></script>-->
 
 <style>
 html, body{
@@ -26,11 +27,12 @@ html, body{
 </head>
 
 <body id="controller" ng-app="genomics_app" ng-controller="genomics_controller" ng-init="gene_length" ng-init="gene_color">
-<!--<p> Length: <span ng-bind="gene_length"></span>. Color: <span ng-bind="gene_color"></span>. </p>-->
+<!--<input type="file" id="fileOpener" onchange="open_file(event)">-->
 
-<!--<canvas id="upper_canvas" height="225" width="{{window_width()}}"></canvas>-->
-<!--<canvas id="lower_canvas" height="225" width="{{window_width()}}"></canvas>-->
-<script src="../js/p5_script.js"></script>
+<!--<script src="../js/processing_script.js"></script>-->
+<script src="../toolkit/WebAbstraction/rtcWeb/static/js/p5_script.js">
+    p5canvas(1, 1, 1);
+</script>
 </body>
 
 </html>
