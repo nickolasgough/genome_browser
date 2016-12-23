@@ -1,0 +1,53 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html ng-app="store">
+    <head>
+        <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+		
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="{%static 'rtcWeb/js/pageCollab.js'%}"></script>
+
+
+
+
+<style>
+#imageOfMousePointer{
+position:absolute;
+height:15px;
+width:15px;
+}
+body{
+height:4000px;
+
+}
+</style>
+    </head> 
+
+    <body id ="yo">
+
+
+
+
+<image id="imageOfMousePointer"src="http://th07.deviantart.net/fs70/PRE/i/2011/260/3/5/dash_hooray_by_rainbowcrab-d49xk0d.png">
+
+    <div class="w3-container w3-teal w3-text-white-opacity w3-animate-top">
+            <h5>HCI</h5>
+            <p>Membership Form and Members</p>
+        </div>
+
+<input></input>
+        <div class="w3-card-2" >
+            <form name="perForm" novalidate>
+                <h3>Name: <input class="w3-input w3-validate" name="name" type="text"  placeholder="Your name please" required></h3>
+               
+            </form>
+          
+        </div>
+
+
+
+    </body>
+
+</html>
